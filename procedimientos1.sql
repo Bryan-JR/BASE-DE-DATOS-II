@@ -87,3 +87,55 @@ BEGIN
 END$$
 DELIMITER ;
 CALL valorNotaConSalida(0, @valor);
+
+-- 6
+DELIMITER $$
+DROP PROCEDURE IF EXISTS `valorNotaConSalidaCaso`$$
+CREATE PROCEDURE valorNotaConSalidaCaso(in nota NUMERIC, out valor VARCHAR(200))
+BEGIN
+	CASE  
+		WHEN (nota >= 0 and nota < 5) THEN
+			SET valor = 'INSUFICIENTE';
+		WHEN (nota >= 5 and nota < 6) THEN
+			SET valor = 'APROBADO';
+		WHEN (nota >= 6 and nota < 7) THEN
+			SET valor = 'BIEN';
+		WHEN (nota >= 7 and nota < 9) THEN
+			SET valor = 'NOTABLE';
+		WHEN (nota >= 9 and nota <= 10) THEN
+			SET valor = 'SOBRESALIENTE';
+		ELSE 
+			SET valor = "NOTA NO VALIDA";
+	END CASE;
+    SELECT valor as VALOR;
+END$$	
+DELIMITER ;
+CALL valorNotaConSalidaCaso(11, @valor);
+
+-- 7
+
+DELIMITER $$
+DROP PROCEDURE IF EXISTS `DiasDeLaSemana` $$
+CREATE PROCEDURE DiasDeLaSemana (IN NumeroDia NUMERIC, out Dia VARCHAR(20))
+BEGIN
+ CASE 
+	WHEN NumeroDia = 1 THEN
+		SET Dia='Lunes';
+    WHEN NumeroDia = 2 THEN
+		SET Dia='Martes';
+    WHEN NumeroDia = 3 THEN
+		SET Dia='Miercoles';
+    WHEN NumeroDia = 4 THEN
+		SET Dia='Jueves';
+    WHEN NumeroDia = 5 THEN
+		SET Dia='Viernes';
+    WHEN NumeroDia = 6 THEN
+		SET Dia='Sabado';
+    WHEN NumeroDia = 7 THEN
+		SET Dia='Domingo';
+ END CASE;
+ SELECT Dia;
+END$$
+DELIMITER ;
+
+CALL DiasDeLaSemana(7,@Dia);
