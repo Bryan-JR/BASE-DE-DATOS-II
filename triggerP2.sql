@@ -1,7 +1,7 @@
 -- Se crea en la base de datos la tabla alumnos y las tablas de los log
-DROP TABLE IF EXISTS alumnos;
 DROP TABLE IF EXISTS log_cambios_email;
 DROP TABLE IF EXISTS log_alumnos_eliminados;
+DROP TABLE IF EXISTS alumnos;
 
 CREATE TABLE alumnos (
   id SERIAL  NOT NULL ,
@@ -40,11 +40,7 @@ PRIMARY KEY(id)  ,
 -- EJERCICIO 2: 
 -- Se crea el procedimiento para crear un email
 
-CREATE OR REPLACE FUNCTION crear_email(IN nombre VARCHAR(45),
-									   IN apellido1 VARCHAR(45),
-									   IN apellido2 VARCHAR(45),
-									   IN dominio VARCHAR(45)
-									  )
+CREATE OR REPLACE FUNCTION crear_email(nombre VARCHAR(45),apellido1 VARCHAR(45),apellido2 VARCHAR(45),dominio VARCHAR(45))
 RETURNS VARCHAR(100)
 AS
 $$
