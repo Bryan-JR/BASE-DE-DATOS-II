@@ -88,6 +88,7 @@ INSERT INTO alumnos (nombre, apellido1, apellido2, email)
 SELECT * FROM alumnos;
 
 -- EJERCICIO 3:
+-- Se crea la función para el trigger
 CREATE OR REPLACE FUNCTION ingresar_log_update() RETURNS TRIGGER
 AS
 $$
@@ -102,6 +103,7 @@ END
 $$
 LANGUAGE plpgsql;
 
+-- Se crea el trigger trigger_guardar_email_after_update
 CREATE TRIGGER trigger_guardar_email_after_update
 AFTER UPDATE ON alumnos
 FOR EACH ROW
@@ -111,3 +113,27 @@ UPDATE alumnos SET email = 'brayanjiru14@gmail.com' WHERE id=1;
 UPDATE alumnos SET email = 'juanLara12@gmail.com' WHERE id=3;
 
 SELECT * FROM log_cambios_email;
+
+-- EJERCICIO 4:
+CREATE OR REPLACE FUNCTION ingresar_log_delete() RETURNS TRIGGER
+AS
+$$
+BEGIN
+	INSERT INTO log_alumnos_eliminados (id_alumno, fecha_hora, nombre, apellido1, apellido2, email)
+		VALUES
+		(OLD.id, NOW(), OLD.nombre, OLD.apellido1, OLD.apellido2, OLD.email);
+	RETURN NULL;
+END
+$$
+LANGUAGE plpgsql;
+
+-- Se crea el trigger trigger_guardar_alumnos_eliminados
+CREATE TRIGGER trigger_guardar_alumnos_eliminados
+BEFORE DELETE ON alumnos
+FOR EACH ROW
+EXECUTE FUNCTION ingresar_log_delete();
+
+DELETE FROM alumnos WHERE id=2;
+
+SELECT * FROM alumnos;
+SELECT * FROM log_alumnos_eliminados;
